@@ -121,6 +121,10 @@ Object subclass: Main [
         ] ifTrue: [
             shapes := Main loadShapes: (Smalltalk arguments first).
             success := 1.
+            (shapes isEmpty) ifTrue: [
+                Transcript show: 'There are no shapes in the file'; cr.
+                success := 0.
+            ].
         ].
 ].
 
