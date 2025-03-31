@@ -109,6 +109,89 @@ Object subclass: Main [
             show: '		>='; cr;
             cr.
     ]
+
+    Main class >> count: shapeList [
+        | counter |
+        counter := 0.
+        shapeList do: [:eachShape | counter := counter + 1].
+        Transcript
+            show: 'There are ', counter printString, ' shapes.';
+            cr.
+    ]
+
+    Main class >> min: shapeList [
+        (shapeList isEmpty) ifTrue: [Transcript show: 'There are no shapes that satisfy the condition(s).'; cr.]
+        ifFalse: [
+            | minArea minVolume |
+            minArea := shapeList first getArea.
+            minVolume := shapeList first getVolume.
+            shapeList do: [:eachShape |
+                (eachShape getArea < minArea) ifTrue: [minArea := eachShape getArea.].
+                (eachShape getVolume < minVolume) ifTrue: [minVolume := eachShape getVolume.].
+            ].
+            Transcript
+                show: 'min(Surface Area)=', minArea printString;
+                cr;
+                show: 'min(Volume)=', minVolume printString;
+                cr.
+        ].
+    ]
+
+    Main class >> max: shapeList [
+        (shapeList isEmpty) ifTrue: [Transcript show: 'There are no shapes that satisfy the condition(s).'; cr.]
+        ifFalse: [
+            | maxArea maxVolume |
+            maxArea := shapeList first getArea.
+            maxVolume := shapeList first getVolume.
+            shapeList do: [:eachShape |
+                (eachShape getArea > maxArea) ifTrue: [maxArea := eachShape getArea.].
+                (eachShape getVolume > maxVolume) ifTrue: [maxVolume := eachShape getVolume.].
+            ].
+            Transcript
+                show: 'max(Surface Area)=', maxArea printString;
+                cr;
+                show: 'max(Volume)=', maxVolume printString;
+                cr.
+        ].
+    ]
+
+    Main class >> avg: shapeList [
+        (shapeList isEmpty) ifTrue: [Transcript show: 'There are no shapes that satisfy the condition(s).'; cr.]
+        ifFalse: [
+            | totalArea totalVolume counter |
+            totalArea := 0.0.
+            totalVolume := 0.0.
+            counter := 0.
+            shapeList do: [:eachShape |
+                totalArea := totalArea + (eachShape getArea).
+                totalVolume := totalVolume + (eachShape getVolume).
+                counter := counter + 1.
+            ].
+            Transcript
+                show: 'avg(Surface Area)=', (totalArea / counter) printString;
+                cr;
+                show: 'avg(Volume)=', (totalVolume / counter) printString;
+                cr.
+        ].
+    ]
+
+    Main class >> total: shapeList [
+        (shapeList isEmpty) ifTrue: [Transcript show: 'There are no shapes that satisfy the condition(s).'; cr.]
+        ifFalse: [
+            | totalArea totalVolume counter |
+            totalArea := 0.0.
+            totalVolume := 0.0.
+            shapeList do: [:eachShape |
+                totalArea := totalArea + (eachShape getArea).
+                totalVolume := totalVolume + (eachShape getVolume).
+            ].
+            Transcript
+                show: 'total(Surface Area)=', totalArea printString;
+                cr;
+                show: 'total(Volume)=', totalVolume printString;
+                cr.
+        ].
+    ]
 ].
 
 
@@ -138,6 +221,11 @@ Object subclass: Main [
                 eachShape printDetails.
             ]. 
         ].
+        userInput = 'count' ifTrue: [ Main count: shapes. ].
+        userInput = 'min' ifTrue: [ Main min: shapes. ].
+        userInput = 'max' ifTrue: [ Main max: shapes. ].
+        userInput = 'avg' ifTrue: [ Main avg: shapes. ].
+        userInput = 'total' ifTrue: [ Main total: shapes. ].
         
         
         Transcript show: 'Enter a command: '.
