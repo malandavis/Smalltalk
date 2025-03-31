@@ -20,11 +20,23 @@ Shape subclass: Torus [
 
     getArea [
         <category: 'calculations'>
-        ^ (2 * pi * largeRadius) + (2 * pi * smallRadius)
+        ^ (2 * pi * largeRadius) * (2 * pi * smallRadius)
     ]
 
     getVolume [
         <category: 'calculations'>
         ^ (pi * smallRadius * smallRadius) * (2 * pi * largeRadius)
+    ]
+
+    printDetails [
+        Transcript
+            show: 'Torus: ', self getName;
+            show: ', Small Radius=', smallRadius printString;
+            show: ', Big Radius=', largeRadius printString;
+            cr;
+            tab;
+            show: 'Surface Area: ', self getArea printString;
+            show: ', Volume: ', self getVolume printString;
+            cr.
     ]
 ]

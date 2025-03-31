@@ -129,6 +129,11 @@ Object subclass: Main [
     userInput := stdin nextLine.
     [ userInput = 'quit' ] whileFalse: [
         userInput = 'help' ifTrue: [ Main printHelp. ].
+        userInput = 'print' ifTrue: [ 
+            shapes do: [:eachShape | 
+                eachShape printDetails.
+            ]. 
+        ].
         
         
         Transcript show: 'Enter a command: '.

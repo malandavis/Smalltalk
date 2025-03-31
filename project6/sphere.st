@@ -26,4 +26,15 @@ Shape subclass: Sphere [
         <category: 'calculations'>
         ^ (4 / 3) * pi * radius * radius * radius
     ]
+
+    printDetails [
+        Transcript
+            show: 'Sphere: ', self getName;
+            show: ', Radius=', radius printString;
+            cr;
+            tab;
+            show: 'Surface Area: ', self getArea printString;
+            show: ', Volume: ', self getVolume printString;
+            cr.
+    ]
 ]

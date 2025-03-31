@@ -27,4 +27,16 @@ Shape subclass: Cylinder [
         <category: 'calculations'>
         ^ radius * pi * radius * height
     ]
+
+    printDetails [
+        Transcript
+            show: 'Cylinder: ', self getName;
+            show: ', Radius=', radius printString;
+            show: ', Height=', height printString;
+            cr;
+            tab;
+            show: 'Surface Area: ', self getArea printString;
+            show: ', Volume: ', self getVolume printString;
+            cr.
+    ]
 ]

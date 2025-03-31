@@ -22,4 +22,17 @@ Shape subclass: Box [
     getVolume [
         ^ length * width * height
     ]
+
+    printDetails [
+        Transcript
+            show: 'Box: ', self getName;
+            show: ', Length=', length printString;
+            show: ', Width=', width printString;
+            show: ', Height=', height printString;
+            cr;
+            tab;
+            show: 'Surface Area: ', self getArea printString;
+            show: ', Volume: ', self getVolume printString;
+            cr.
+    ]
 ]
