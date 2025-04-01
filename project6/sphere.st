@@ -27,6 +27,8 @@ Shape subclass: Sphere [
         ^ (4 / 3) * pi * radius * radius * radius
     ]
 
+    getType [ ^'sphere' ]
+
     printDetails [
         Transcript
             show: 'Sphere: ', self getName;

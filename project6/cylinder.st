@@ -28,6 +28,8 @@ Shape subclass: Cylinder [
         ^ radius * pi * radius * height
     ]
 
+    getType [ ^'clyinder' ]
+
     printDetails [
         Transcript
             show: 'Cylinder: ', self getName;

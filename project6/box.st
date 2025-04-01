@@ -23,6 +23,8 @@ Shape subclass: Box [
         ^ length * width * height
     ]
 
+    getType [ ^'box' ]
+
     printDetails [
         Transcript
             show: 'Box: ', self getName;

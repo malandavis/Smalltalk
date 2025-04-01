@@ -28,6 +28,8 @@ Shape subclass: Torus [
         ^ (pi * smallRadius * smallRadius) * (2 * pi * largeRadius)
     ]
 
+    getType [ ^'torus' ]
+
     printDetails [
         Transcript
             show: 'Torus: ', self getName;

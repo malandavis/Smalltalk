@@ -192,6 +192,90 @@ Object subclass: Main [
                 cr.
         ].
     ]
+
+    Main class >> splitAtFirstNumber: aString [
+        | index |
+        index := aString findFirst: [:char | char isDigit].
+        index = 0 ifTrue: [ ^aString ].
+        ^{
+            aString copyFrom: 1 to: index - 1.
+            (aString copyFrom: index to: aString size) asNumber.
+        }.
+    ]
+
+    Main class >> checkConditions: passedList count: num [
+        | cond conditions success shapeList newList |
+        shapeList := passedList.
+        cond := 0.
+        [ cond < num ] whileTrue: [
+            Transcript show: 'Enter condition #', (cond + 1) printString, ': '.
+            conditions := stdin nextLine substrings: ' '.
+            success := 1.
+
+            (#('type' 'area' 'volume') includes: (conditions first)) ifFalse: [
+                Transcript show: conditions first, ': invalid column.'; cr.
+                success := 0.
+            ].
+            (#('<' '>' '<=' '>=' '==' '!=') includes: (conditions second)) ifFalse: [
+                Transcript show: conditions second, ': invalid operator.'; cr.
+                success := 0.
+            ].
+
+            (success = 1) ifTrue: [
+                (conditions first = 'volume') ifTrue: [
+                    newList := OrderedCollection new.
+                    shapeList do: [:eachShape |
+                        (Main operation: (eachShape getVolume) value: conditions second value: (conditions third asNumber asFloat)) ifTrue: [ newList add: eachShape ].
+                    ].
+                    shapeList := newList.
+                ] ifFalse: [
+                    (conditions first = 'area') ifTrue: [
+                        newList := OrderedCollection new.
+                        shapeList do: [:eachShape |
+                            (Main operation: (eachShape getArea) value: conditions second value: (conditions third asNumber asFloat)) ifTrue: [ newList add: eachShape ].
+                        ].
+                        shapeList := newList.
+                    ] ifFalse: [
+                        (conditions first = 'type') ifTrue: [
+                            newList := OrderedCollection new.
+                            shapeList do: [:eachShape |
+                                (Main operation: (eachShape getType) value: conditions second value: conditions third) ifTrue: [ newList add: eachShape ].
+                            ].
+                            shapeList := newList.
+                        ].
+                    ].
+                ].
+
+                cond := cond + 1.
+            ].
+        ].
+
+        ^ shapeList.
+    ]
+
+    Main class >> operation: a value: op value: b[
+        ('>' = op) ifTrue: [ ^(a > b)].
+        ('>=' = op) ifTrue: [ ^(a >= b)].
+        ('<' = op) ifTrue: [ ^(a < b)].
+        ('<=' = op) ifTrue: [ ^(a <= b)].
+        ('==' = op) ifTrue: [ ^(a = b)].
+        ('!=' = op) ifTrue: [ ^(a ~= b)].
+    ]
+
+    " Main class >> checkVolume: shapeList operator: op value: val [
+        | newList |
+        newList := OrderedCollection new.
+        shapeList do: [:eachShape |
+            (Main operation: (eachShape getVolume) value: op value: (val asNumber asFloat)) ifTrue: [ newList add: eachShape ].
+        ].
+        ^ newList.
+    ] "
+
+    Main class >> printShapes: shapeList [
+        shapeList do: [:eachShape | 
+            eachShape printDetails.
+        ]. 
+    ]
 ].
 
 
@@ -212,20 +296,32 @@ Object subclass: Main [
 ].
 
 (success = 1) ifTrue: [
+    | commandList |
     Transcript show: 'Enter a command: '.
     userInput := stdin nextLine.
     [ userInput = 'quit' ] whileFalse: [
-        userInput = 'help' ifTrue: [ Main printHelp. ].
-        userInput = 'print' ifTrue: [ 
-            shapes do: [:eachShape | 
-                eachShape printDetails.
-            ]. 
+        (#('count' 'min' 'max' 'avg' 'total' 'help' 'print') includes: userInput) ifTrue: [
+            userInput = 'help' ifTrue: [ Main printHelp. ].
+            userInput = 'print' ifTrue: [ Main printShapes: shapes ].
+            userInput = 'count' ifTrue: [ Main count: shapes. ].
+            userInput = 'min' ifTrue: [ Main min: shapes. ].
+            userInput = 'max' ifTrue: [ Main max: shapes. ].
+            userInput = 'avg' ifTrue: [ Main avg: shapes. ].
+            userInput = 'total' ifTrue: [ Main total: shapes. ].
+        ] ifFalse: [
+            commandList := Main splitAtFirstNumber: userInput.
+            (#('count' 'min' 'max' 'avg' 'total' 'help' 'print') includes: (commandList first)) ifTrue: [
+                " Transcript
+                    show: 'New commands: ', commandList first;
+                    show: ' and ', commandList second printString; cr. "
+                condList := Main checkConditions: shapes count: (commandList second asNumber).
+                (commandList first = 'count') ifTrue: [ Main count: condList ].
+                (commandList first = 'min') ifTrue: [ Main min: condList ].
+                (commandList first = 'avg') ifTrue: [ Main avg: condList ].
+                (commandList first = 'total') ifTrue: [ Main total: condList ].
+                (commandList first = 'print') ifTrue: [ Main printShapes: condList ].
+            ].
         ].
-        userInput = 'count' ifTrue: [ Main count: shapes. ].
-        userInput = 'min' ifTrue: [ Main min: shapes. ].
-        userInput = 'max' ifTrue: [ Main max: shapes. ].
-        userInput = 'avg' ifTrue: [ Main avg: shapes. ].
-        userInput = 'total' ifTrue: [ Main total: shapes. ].
         
         
         Transcript show: 'Enter a command: '.
