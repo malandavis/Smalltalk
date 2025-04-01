@@ -32,11 +32,11 @@ Shape subclass: Sphere [
     printDetails [
         Transcript
             show: 'Sphere: ', self getName;
-            show: ', Radius=', radius printString;
+            show: ', Radius=', (Main trunc: radius);
             cr;
             tab;
-            show: 'Surface Area: ', self getArea printString;
-            show: ', Volume: ', self getVolume printString;
+            show: 'Surface Area: ', (Main trunc: self getArea);
+            show: ', Volume: ', (Main trunc: self getVolume);
             cr.
     ]
 ]

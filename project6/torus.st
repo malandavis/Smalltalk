@@ -33,12 +33,12 @@ Shape subclass: Torus [
     printDetails [
         Transcript
             show: 'Torus: ', self getName;
-            show: ', Small Radius=', smallRadius printString;
-            show: ', Big Radius=', largeRadius printString;
+            show: ', Small Radius=', (Main trunc: smallRadius);
+            show: ', Big Radius=', (Main trunc: largeRadius);
             cr;
             tab;
-            show: 'Surface Area: ', self getArea printString;
-            show: ', Volume: ', self getVolume printString;
+            show: 'Surface Area: ', (Main trunc: self getArea);
+            show: ', Volume: ', (Main trunc: self getVolume);
             cr.
     ]
 ]

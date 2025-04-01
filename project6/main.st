@@ -130,9 +130,9 @@ Object subclass: Main [
                 (eachShape getVolume < minVolume) ifTrue: [minVolume := eachShape getVolume.].
             ].
             Transcript
-                show: 'min(Surface Area)=', minArea printString;
+                show: 'min(Surface Area)=', (Main trunc: minArea);
                 cr;
-                show: 'min(Volume)=', minVolume printString;
+                show: 'min(Volume)=', (Main trunc: minVolume);
                 cr.
         ].
     ]
@@ -148,9 +148,9 @@ Object subclass: Main [
                 (eachShape getVolume > maxVolume) ifTrue: [maxVolume := eachShape getVolume.].
             ].
             Transcript
-                show: 'max(Surface Area)=', maxArea printString;
+                show: 'max(Surface Area)=', (Main trunc: maxArea);
                 cr;
-                show: 'max(Volume)=', maxVolume printString;
+                show: 'max(Volume)=', (Main trunc: maxVolume);
                 cr.
         ].
     ]
@@ -168,9 +168,9 @@ Object subclass: Main [
                 counter := counter + 1.
             ].
             Transcript
-                show: 'avg(Surface Area)=', (totalArea / counter) printString;
+                show: 'avg(Surface Area)=', (Main trunc: (totalArea / counter));
                 cr;
-                show: 'avg(Volume)=', (totalVolume / counter) printString;
+                show: 'avg(Volume)=', (Main trunc: (totalVolume / counter));
                 cr.
         ].
     ]
@@ -186,9 +186,9 @@ Object subclass: Main [
                 totalVolume := totalVolume + (eachShape getVolume).
             ].
             Transcript
-                show: 'total(Surface Area)=', totalArea printString;
+                show: 'total(Surface Area)=', (Main trunc: totalArea);
                 cr;
-                show: 'total(Volume)=', totalVolume printString;
+                show: 'total(Volume)=', (Main trunc: totalVolume);
                 cr.
         ].
     ]
@@ -253,7 +253,7 @@ Object subclass: Main [
         ^ shapeList.
     ]
 
-    Main class >> operation: a value: op value: b[
+    Main class >> operation: a value: op value: b [
         ('>' = op) ifTrue: [ ^(a > b)].
         ('>=' = op) ifTrue: [ ^(a >= b)].
         ('<' = op) ifTrue: [ ^(a < b)].
@@ -262,19 +262,16 @@ Object subclass: Main [
         ('!=' = op) ifTrue: [ ^(a ~= b)].
     ]
 
-    " Main class >> checkVolume: shapeList operator: op value: val [
-        | newList |
-        newList := OrderedCollection new.
-        shapeList do: [:eachShape |
-            (Main operation: (eachShape getVolume) value: op value: (val asNumber asFloat)) ifTrue: [ newList add: eachShape ].
-        ].
-        ^ newList.
-    ] "
-
     Main class >> printShapes: shapeList [
         shapeList do: [:eachShape | 
             eachShape printDetails.
         ]. 
+    ]
+
+    Main class >> trunc: aFloat [
+        | result toRound roundUp |
+        result := ((aFloat * 100.0) asInteger).
+        ^ (result / 100.0) printString.
     ]
 ].
 
@@ -311,19 +308,24 @@ Object subclass: Main [
         ] ifFalse: [
             commandList := Main splitAtFirstNumber: userInput.
             (#('count' 'min' 'max' 'avg' 'total' 'help' 'print') includes: (commandList first)) ifTrue: [
-                " Transcript
-                    show: 'New commands: ', commandList first;
-                    show: ' and ', commandList second printString; cr. "
                 condList := Main checkConditions: shapes count: (commandList second asNumber).
                 (commandList first = 'count') ifTrue: [ Main count: condList ].
                 (commandList first = 'min') ifTrue: [ Main min: condList ].
+                (commandList first = 'max') ifTrue: [ Main max: condList ].
                 (commandList first = 'avg') ifTrue: [ Main avg: condList ].
                 (commandList first = 'total') ifTrue: [ Main total: condList ].
                 (commandList first = 'print') ifTrue: [ Main printShapes: condList ].
+            ] ifFalse: [
+                Transcript
+                    show: userInput, ': invalid action';
+                    cr;
+                    show: 'Valid actions: print count min max total avg';
+                    cr;
+                    show: 'Enter help for help'; cr.
             ].
         ].
         
-        
+        Transcript cr.
         Transcript show: 'Enter a command: '.
         userInput := stdin nextLine.
     ].

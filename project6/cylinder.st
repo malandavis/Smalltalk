@@ -28,17 +28,17 @@ Shape subclass: Cylinder [
         ^ radius * pi * radius * height
     ]
 
-    getType [ ^'clyinder' ]
+    getType [ ^'cylinder' ]
 
     printDetails [
         Transcript
             show: 'Cylinder: ', self getName;
-            show: ', Radius=', radius printString;
-            show: ', Height=', height printString;
+            show: ', Radius=', (Main trunc: radius);
+            show: ', Height=', (Main trunc: height);
             cr;
             tab;
-            show: 'Surface Area: ', self getArea printString;
-            show: ', Volume: ', self getVolume printString;
+            show: 'Surface Area: ', (Main trunc: self getArea);
+            show: ', Volume: ', (Main trunc: self getVolume);
             cr.
     ]
 ]

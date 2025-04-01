@@ -28,13 +28,13 @@ Shape subclass: Box [
     printDetails [
         Transcript
             show: 'Box: ', self getName;
-            show: ', Length=', length printString;
-            show: ', Width=', width printString;
-            show: ', Height=', height printString;
+            show: ', Length=', (Main trunc: length);
+            show: ', Width=', (Main trunc: width);
+            show: ', Height=', (Main trunc: height);
             cr;
             tab;
-            show: 'Surface Area: ', self getArea printString;
-            show: ', Volume: ', self getVolume printString;
+            show: 'Surface Area: ', (Main trunc: self getArea);
+            show: ', Volume: ', (Main trunc: self getVolume);
             cr.
     ]
 ]
