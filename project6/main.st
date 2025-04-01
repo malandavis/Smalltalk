@@ -269,9 +269,15 @@ Object subclass: Main [
     ]
 
     Main class >> trunc: aFloat [
-        | result toRound roundUp |
+        | result toRound roundUp decimalIndex |
         result := ((aFloat * 100.0) asInteger).
-        ^ (result / 100.0) printString.
+        result := (result / 100.0) printString.
+        decimalIndex := result indexOf: $..
+    
+        (result size - decimalIndex) < 2 ifTrue: [
+            result := result,'0'.
+        ].
+        ^result.
     ]
 ].
 
